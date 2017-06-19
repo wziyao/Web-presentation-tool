@@ -1,0 +1,147 @@
+<
+Redis
+
+	started in 2009
+	sponsored by Pivotal(VMWare) in 2013 and by Redis Labs in 2015
+	in-memory
+	key-value store, NoSQL
+/>
+
+<
+5 Basic Data Structures
+
+		string (key-value, value can be string, int or float)
+		+
+  			set, get, del, 
+  		-
+
+		list (values are strings, support duplicated values)
+		+
+  			lpush, rpush, lpop, rpop, lrange, lindex
+  		-	
+
+		set (values are unique and unordered)
+		+
+		  sadd, smembers, sismember, srem, einter, sunion, sdiff
+		-
+
+		hash (2-levels key-value store that contains a key-value map; a mini-Redis)
+		+
+		  hset, hget, hgetallm, hdel
+		-
+
+		zset (2-levels key-value store, sorted by float value)
+		+
+		  zadd, zrange, zrangebyscore, zrem
+		-
+
+
+/>
+
+<
+Advanced Data Structures
+
+	bit array/bitmap
+	hyperloglog: a probabilistic data structure
+
+/>
+
+<
+Namespace
+
+	delimiter is ":"
+
+	Examples:
+		+
+		loginToken: (hash, token & username)
+		recentToken: (hash, token & timstamp)
+		viewed:123456 (viewed:token, zset, item & timestamp)
+		viewed: (viewed:, zset, item & times)
+		-
+/>
+
+<
+Usage scenarios: Cache
+
+	  a e-commerce web site (<10GBs Redis server): 
+	  +
+	  	大约500万名不同用户带来的1亿次点击和10万多件商品的成交
+	  	日负载量相对比较大——平均情况下每秒钟大约1,200次写入，高峰时期每秒钟接近6,000次写入 (required 10+ RDB servers)
+	  	to cache token cookies (<= 10M)
+	  	to cache shopping cart
+	  	to cache static pages
+	  	to catce database rows, eg. item details
+	  	to cache item review records (20,000 items)
+	  	auto expiry of keys
+	  -
+/>
+
+< 
+Cache Example
+	  Weibo: 微博=feed+关系+数字
+	  	+
+	     2013:
+	     	+
+	       2200+亿 comments/day, 5000亿Read/day, 500亿Write/day
+	       18TB+ Memory
+	       2000+ instances on 500+ Servers in 6 IDC 
+		       +
+		       key : user id (用户 profile)
+			   hset fromuid.following touid addtime
+			   hset touid.follower fromuid addtime
+			   -
+		   -
+		 Tested: 48G mem, used 38G, single port
+		 +
+		 throughput: good
+		 mem: huge
+		 cpu: costly
+		 not reliable, may lost data
+		 -
+		 -
+/>
+
+< 
+Other Usage scenarios
+
+	Queue: use list as a queue, push and pop event or message
+	Counter/ranking list: use set and zset to rank
+		+
+	  	example: zrange articleVoted 0 10 withscores
+	  	-
+	Pub/Sub
+/>
+
+<
+Performance
+
+	TB level data, millions requests/second
+
+	single thread, can't use multi-core cpu
+		+
+		multi redis on a multi-core machine
+		multi redis on multi machines
+		-
+	maxmemory
+
+	master/slave replication
+	persisrence
+	client-side sharding
+
+/>
+
+<
+Performance example: Pinterest
+	  sharding by user id, >8000 virtual sharding
+	  master/slave for failover
+	  hourly persistency to Amazon S3
+/>
+
+<
+Redis in Emcee
+
+	session cache, auto expire in 90 mins
+	sidekiq + redis for job scheduling
+	rake tasks for data migration
+/>
+

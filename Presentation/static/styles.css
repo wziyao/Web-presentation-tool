@@ -1,0 +1,43 @@
+
+h1 {
+    color: white;
+    font-family: verdana;
+    font-size: 300%;
+}
+
+h3 {
+    color: white;
+    font-family: verdana;
+    font-size: 130%;
+}
+
+h5 {
+    color: lightblue;
+    font-family: courier;
+    font-size: 100%;
+}
+
+li {
+    color: white;
+    font-family: verdana;
+    font-size: 130%;
+    font-weight:bold;
+}
+
+a.cover  {
+    color: lightblue;
+    font-family: courier;
+    font-size: 160%;
+}
+
+a.normal  {
+    color: lightblue;
+    font-family: courier;
+    font-size: 100%;
+}
+
+.centerTable { margin: 0px auto; }
+
+.tab { margin-left: 40px; }
+
+.tab1 { padding-left: 4em; }
